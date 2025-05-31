@@ -582,14 +582,22 @@ form.addEventListener("submit", function (e) {
 
 
 // Звук
+let enginePlayed = false;
+
 ScrollTrigger.create({
     trigger: "#acceleration",
     start: "top center",
     onEnter: () => {
-        const audio = document.getElementById("engine-sound");
-        if (audio) audio.play();
+        if (!enginePlayed) {
+            const audio = document.getElementById("engine-sound");
+            if (audio) {
+                audio.play();
+                enginePlayed = true;
+            }
+        }
     }
 });
+
 
 
 
