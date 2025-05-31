@@ -1,0 +1,1016 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'Arial', sans-serif;
+    background: #000;
+    color: #fff;
+    cursor: none;
+    height: 100%;
+    overflow: initial;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+.cursor {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, opacity 0.2s ease;
+    z-index: 999;
+    opacity: 1;
+}
+
+/* Когда наводим на ссылку/кнопку — белая точка исчезает, системный курсор появляется */
+.cursor.hidden {
+    opacity: 0;
+}
+
+/* Показываем курсор по умолчанию на ссылках/кнопках */
+a,
+button {
+    cursor: pointer;
+}
+
+.cursor.hovered {
+    width: 0;
+    height: 0;
+    cursor: pointer;
+}
+
+
+
+.wrapper,
+.content {
+    width: 100%;
+}
+
+/* HEADER + BURGER */
+.header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: transparent;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* PRELOADER */
+#preloader {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#preloader .rings {
+    width: 300px;
+    height: 100px;
+    margin-left: 7dvh;
+}
+
+#preloader .rings svg {
+    width: 100%;
+    height: 100%;
+}
+
+#preloader .rings .ring {
+    stroke: #333;
+    fill: none;
+}
+
+.audi-text {
+    margin-top: -10px;
+    margin-left: 1.5dvh;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    font-size: 48px;
+    opacity: 0;
+    letter-spacing: 1cap;
+    transform: translateY(10px);
+}
+
+.burger {
+    width: 30px;
+    height: 18px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 150;
+}
+
+.burger span {
+    height: 6px;
+    background: white;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+.burger.active span:first-child {
+    transform: rotate(45deg) translateY(7px);
+}
+
+.burger.active span:last-child {
+    transform: rotate(-45deg) translateY(-7px);
+}
+
+/* MENU */
+.menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.6s ease;
+    z-index: 99;
+    overflow: hidden;
+}
+
+.menu.active {
+    transform: translateX(0);
+}
+
+/* ====== SPEED LINES ====== */
+.menu__lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 0,
+            rgba(255, 255, 255, 0.05) 2px,
+            transparent 2px,
+            transparent 12px);
+    animation: moveLines 4s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes flicker {
+
+    0%,
+    100% {
+        opacity: 0.05;
+    }
+
+    50% {
+        opacity: 0.1;
+    }
+}
+
+.menu__lines {
+    animation: moveLines 4s linear infinite, flicker 1s ease-in-out infinite;
+}
+
+@keyframes moveLines {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ====== ГЛУБОКИЙ ФОН - ПЕРЕЛИВ ====== */
+.menu__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #ffffff0a 0%, transparent 80%);
+    opacity: 0.05;
+    animation: pulse 10s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+/* ====== МЕНЮ ====== */
+.menu__links {
+    position: relative;
+    list-style: none;
+    z-index: 2;
+    text-align: center;
+}
+
+.menu__links li {
+    margin: 25px 0;
+}
+
+.menu__links a {
+    font-family: 'Orbitron', sans-serif;
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 2rem;
+    transition: color 0.3s;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.menu__links a span {
+    display: inline-block;
+    transform: translateY(30px);
+    opacity: 0;
+    white-space: pre;
+    transition: all 0.5s ease;
+}
+
+.menu__links a .tilt {
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+    perspective: 600px;
+}
+
+.menu__links a:hover .tilt {
+    transform: rotateX(8deg) rotateY(-8deg) scale(1.05);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+/* Когда меню активно — анимация появления */
+.menu.active .menu__links a span {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Задержка для stagger эффекта */
+.menu.active .menu__links li:nth-child(1) a span {
+    transition-delay: 0.2s;
+}
+
+.menu.active .menu__links li:nth-child(2) a span {
+    transition-delay: 0.4s;
+}
+
+.menu.active .menu__links li:nth-child(3) a span {
+    transition-delay: 0.6s;
+}
+
+.menu.active .menu__links li:nth-child(4) a span {
+    transition-delay: 0.8s;
+}
+
+.menu__links a:hover {
+    color: #aaa;
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.hero__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* затемнение */
+    z-index: -1;
+}
+
+.hero__content h1 {
+    font-size: clamp(3rem, 6vw, 7rem);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.hero__title {
+    transform-origin: center top;
+}
+
+.hero__content p {
+    font-size: clamp(1rem, 2vw, 2rem);
+    opacity: 0.8;
+}
+
+.hero__button {
+    background: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-family: 'Audi Type', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    margin-top: 6dvh;
+}
+
+.hero__button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: -31;
+    transition: left 0.4s ease;
+}
+
+.hero__button:hover::before {
+    left: 0;
+}
+
+.hero__button:hover {
+    color: #000;
+
+}
+
+/* ABOUT */
+.about {
+    padding: 200px 40px;
+    background: #111;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about__container {
+    display: flex;
+    max-width: 1200px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 60px;
+}
+
+
+
+.about__image-wrapper {
+    flex: 1;
+    clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.about__image {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.about__text {
+    flex: 1;
+}
+
+.about__text h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.about__text p {
+    font-size: 1.3rem;
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
+
+
+
+.models {
+    padding: 120px 20px;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 0, 0, 0.1), transparent 70%),
+        linear-gradient(180deg, #000, #111);
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.models__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 80px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.models__container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.models__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 60px;
+}
+
+.model {
+    background: #111;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.model:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4),
+        0 0 40px rgba(255, 0, 0, 0.2),
+        0 0 60px rgba(255, 0, 0, 0.1);
+}
+
+.model__image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    object-fit: cover;
+    transition: box-shadow 0.3s ease;
+}
+
+.model:hover .model__image img {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+}
+
+.model__name {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.model__specs {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+.model__specs li {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.counter {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.model__button {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.model__button:hover {
+    background: #e30000;
+    color: #fff;
+}
+
+/* Popup */
+/* Popup layout */
+.popup {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    perspective: 1500px;
+    z-index: 1000;
+}
+
+.popup.show {
+    display: flex;
+}
+
+.popup__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.popup__content {
+    background: #111;
+    color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    transform-style: preserve-3d;
+    transform: rotateY(-90deg) scale(0.5);
+    opacity: 0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    position: relative;
+}
+
+.popup__title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-family: 'Kanit', sans-serif;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.popup__form input,
+.popup__form button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+}
+
+.popup__form input {
+    background: #222;
+    color: white;
+}
+
+.popup__submit {
+    background: #b40000;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.popup__submit:hover {
+    background: #ff0000;
+}
+
+.popup__close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.form-step {
+    display: none;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.next-btn,
+.prev-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #b40000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.next-btn:hover,
+.prev-btn:hover {
+    background: #d10000;
+}
+
+#popupMessage {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -60px;
+    background-color: #111;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    opacity: 0;
+    z-index: 9999;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+input.error {
+    border: 2px solid red;
+}
+
+
+
+
+
+.why-audi {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    perspective: 900px;
+    background: #000;
+}
+
+.why-audi__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../img/why.png') center/cover no-repeat;
+    z-index: -2;
+    transform: scale(1);
+    will-change: transform, filter;
+    filter: brightness(0.6);
+    transition: transform 0.3s ease-out;
+}
+
+.why-audi__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.why-audi__content {
+    text-align: center;
+    color: white;
+    z-index: 2;
+    max-width: 80%;
+    transform: scale(1);
+}
+
+.why-audi__content h2 {
+    font-size: 8vw;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.why-audi__content p {
+    font-size: 1.8vw;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+
+
+
+.acceleration {
+    padding-top: 20vh;
+    height: 110vh;
+    background: black;
+    position: relative;
+    overflow: hidden;
+}
+
+.acceleration__wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 200px;
+    transform: translate(-50%, -50%);
+    background: repeating-linear-gradient(to right, #fff 0 2px, transparent 2px 6px);
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.acceleration__car {
+    position: absolute;
+    top: 55%;
+    left: 33%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    will-change: transform, opacity;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.acceleration__car img {
+    width: 600px;
+    filter: brightness(0.8) contrast(1.2);
+}
+
+.acceleration__text {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 2px;
+    opacity: 0;
+    z-index: 3;
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif;
+}
+
+@media (max-width: 767px) {
+    .acceleration {
+        padding-top: 15vh;
+        height: 100vh;
+    }
+
+    .acceleration__car {
+        top: 50%;
+        left: 13%;
+    }
+
+    .acceleration__car img {
+        width: 90vw;
+    }
+
+    .acceleration__text {
+        font-size: 1.2rem;
+        bottom: 8%;
+    }
+
+    .acceleration__wave {
+        height: 100px;
+    }
+}
+
+
+
+.contact {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    color: white;
+    overflow: hidden;
+    background: #0a0a0a;
+}
+
+.contact__image {
+    flex: 1;
+    background: url('../img/front.jpg') center/cover no-repeat;
+    filter: brightness(0.4);
+    transform: scale(1);
+}
+
+.contact__form-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 40px;
+    background: #111;
+}
+
+.contact__title {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact__form input,
+.contact__form textarea {
+    padding: 15px;
+    background: #1a1a1a;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    border-bottom: 2px solid transparent;
+    transition: border 0.3s;
+}
+
+.contact__form input:focus,
+.contact__form textarea:focus {
+    border-bottom: 2px solid #e00;
+    outline: none;
+}
+
+.contact__form button {
+    padding: 15px;
+    background: #e00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.contact__form button:hover {
+    background: #c00;
+}
+
+
+@media (max-width: 768px) {
+    .contact {
+        flex-direction: column;
+    }
+
+    .contact__image {
+        height: 325px;
+        flex: none;
+    }
+
+    .contact__form-wrapper {
+        padding: 40px 20px;
+    }
+
+    .contact__title {
+        font-size: 2.2rem;
+        text-align: center;
+    }
+
+    .contact__form input,
+    .contact__form textarea {
+        font-size: 0.95rem;
+    }
+
+    .contact__form button {
+        font-size: 1rem;
+    }
+}
+
+/* Адаптив для совсем маленьких устройств */
+@media (max-width: 480px) {
+    .contact__title {
+        font-size: 1.8rem;
+    }
+
+    .contact__form-wrapper {
+        padding: 30px 15px;
+    }
+}
+
+/* FOOTER */
+
+.footer {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 80px 20px 40px;
+    text-align: center;
+    font-family: 'AudiType', sans-serif;
+    overflow: hidden;
+    margin-top: 60px;
+}
+
+.footer__container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer__line {
+    height: 2px;
+    width: 0;
+    background: linear-gradient(to right, #e00, transparent);
+    margin: 20px auto;
+    transition: width 0.8s ease;
+}
+
+.footer__line--bottom {
+    background: linear-gradient(to left, #e00, transparent);
+}
+
+.footer__logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #e00;
+}
+
+.footer__nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer__nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.footer__nav a:hover {
+    color: #e00;
+}
+
+.footer__socials {
+    display: flex;
+    gap: 20px;
+    font-size: 1.4rem;
+}
+
+.footer__socials a {
+    color: white;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.footer__socials a:hover {
+    color: #e00;
+    transform: scale(1.2);
+}
+
+.footer__bottom {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Адаптив */
+@media (max-width: 600px) {
+    .footer__nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer__socials {
+        justify-content: center;
+    }
+
+    .footer__logo {
+        font-size: 2rem;
+    }
+}
